@@ -21,6 +21,13 @@ Menü ve düğme yok; hikâye tek akış hâlinde kendiliğinden ilerler.
 Pamuk, tren ve dekorlar kodla çizilen vektör; Rive animasyonları gelince
 yerine takılır. Öğretmen menüsü: başlıkta Pamuk'a uzun basın.
 
+## Canlı deneme
+
+Her `main` gönderimi GitHub Actions ile derlenir, test edilir ve GitHub Pages'e
+yayınlanır: https://kutlu53.github.io/yildiz-ekspresi/ (HTTPS olduğu için
+kamera modu çalışır; MediaPipe modeli ilk açılışta indirilir). İş akışı:
+`.github/workflows/pages.yml`.
+
 ## Çalıştırma
 
 ```bash
