@@ -47,7 +47,7 @@ class _CabStageState extends State<CabStage> {
       final compact = Layout.compact(context);
       final trainH = compact ? 64.0 : 90.0;
       final clockSide =
-          math.min(c.maxHeight * (compact ? 0.36 : 0.5), c.maxWidth * 0.32);
+          math.min(c.maxHeight * (compact ? 0.36 : 0.56), c.maxWidth * 0.36);
       return Stack(
         children: [
           Positioned.fill(
@@ -57,9 +57,10 @@ class _CabStageState extends State<CabStage> {
               children: [
                 Expanded(
                   flex: 5,
-                  child: _Panel(
+                  child: Center(
+                    child: _Panel(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         DigitalBoard(
                             text: widget.boardText, fontSize: compact ? 26 : 40),
@@ -71,6 +72,7 @@ class _CabStageState extends State<CabStage> {
                         ),
                       ],
                     ),
+                  ),
                   ),
                 ),
                 Expanded(
@@ -435,6 +437,7 @@ class GateStage extends StatelessWidget {
       final trainH = compact ? 64.0 : 90.0;
       final clockSide = math.min(c.maxHeight * 0.42, c.maxWidth * 0.28);
       final gateW = math.min(c.maxWidth * 0.34, 300.0);
+      final gateH = c.maxHeight * (compact ? 0.72 : 0.8);
       return Stack(
         children: [
           Positioned(
@@ -454,7 +457,7 @@ class GateStage extends StatelessWidget {
           Positioned(
             right: 24,
             bottom: 0,
-            child: _BigGate(open: open, width: gateW, height: c.maxHeight * 0.8),
+            child: _BigGate(open: open, width: gateW, height: gateH),
           ),
           Positioned(
             left: 0,
@@ -523,7 +526,7 @@ class _BigGate extends StatelessWidget {
               top: 0,
               bottom: 0,
               width: width / 2,
-              child: Container(color: const Color(0xFF8D6E63)),
+              child: const _DoorLeaf(left: true),
             ),
             AnimatedPositioned(
               duration: const Duration(milliseconds: 900),
@@ -531,10 +534,52 @@ class _BigGate extends StatelessWidget {
               top: 0,
               bottom: 0,
               width: width / 2,
-              child: Container(color: const Color(0xFF8D6E63)),
+              child: const _DoorLeaf(left: false),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Kapı kanadı: tahta çizgileri, iç kenarda dikiş ve bir tokmak; iki kanat
+/// yan yana durunca kapı gibi okunur.
+class _DoorLeaf extends StatelessWidget {
+  final bool left;
+
+  const _DoorLeaf({required this.left});
+
+  @override
+  Widget build(BuildContext context) {
+    const seam = BorderSide(color: Color(0xFF4E342E), width: 3);
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF8D6E63),
+        border: Border(
+          left: left ? BorderSide.none : seam,
+          right: left ? seam : BorderSide.none,
+        ),
+      ),
+      child: Stack(
+        children: [
+          for (var i = 1; i <= 3; i++)
+            Align(
+              alignment: Alignment(0, -1 + i * 0.5),
+              child: Container(height: 3, color: const Color(0xFF6D4C41)),
+            ),
+          Align(
+            alignment: Alignment(left ? 0.6 : -0.6, 0.1),
+            child: Container(
+              width: 14,
+              height: 14,
+              decoration: const BoxDecoration(
+                color: Color(0xFFFFB300),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

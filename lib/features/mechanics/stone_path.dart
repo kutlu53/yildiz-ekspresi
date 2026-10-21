@@ -241,7 +241,8 @@ class _StonePathMechanicState extends State<StonePathMechanic>
       body: LayoutBuilder(builder: (context, constraints) {
         final w = constraints.maxWidth;
         final h = constraints.maxHeight;
-        final stoneW = math.min(140.0, w / (_count / 2 + 1.5));
+        final stoneW = math.min(140.0, w / (_count / 2 + 1.5)) *
+            (MediaQuery.sizeOf(context).height < 480 ? 0.85 : 1);
         final stoneH = stoneW * 0.55;
         final rx = w / 2 - stoneW / 2 - 8;
         final ry = h / 2 - stoneH / 2 - 40;

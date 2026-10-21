@@ -151,7 +151,7 @@ class _PlaceCardsMechanicState extends State<PlaceCardsMechanic> {
       celebrate: _celebrate,
       header: widget.prop?.call(_lastFilled),
       body: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           for (final slot in widget.slots)
             Expanded(
@@ -164,12 +164,14 @@ class _PlaceCardsMechanicState extends State<PlaceCardsMechanic> {
                     final filled = (_placed[slot.id]?.length ?? 0) > 0;
                     final hover = candidates.isNotEmpty;
                     return Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         slot.build(context, filled, glowSlot == slot.id),
                         const SizedBox(height: 6),
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
-                          constraints: const BoxConstraints(minHeight: 84),
+                          constraints: BoxConstraints(
+                              minHeight: 84 * Layout.scale(context)),
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             color: hover
@@ -248,6 +250,43 @@ class CardTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = Layout.scale(context);
+    if (Layout.compact(context)) {
+      // Yatay telefon: yatay çip, hepsi kaydırmadan sığsın.
+      return Container(
+        width: 104,
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+        decoration: BoxDecoration(
+          color: placed ? const Color(0xFFC8E6C9) : const Color(0xFFFFF8E1),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: glow ? const Color(0xFFFFD54F) : const Color(0xFF8D6E63),
+            width: glow ? 4 : 3,
+          ),
+          boxShadow: lifted
+              ? const [BoxShadow(blurRadius: 12, color: Colors.black45)]
+              : null,
+        ),
+        child: Row(
+          children: [
+            Icon(card.icon, size: 18, color: const Color(0xFF5D4037)),
+            const SizedBox(width: 4),
+            Expanded(
+              child: Text(
+                card.label,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 11,
+                  height: 1.1,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF263238),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
     return Container(
       width: 104 * s,
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
