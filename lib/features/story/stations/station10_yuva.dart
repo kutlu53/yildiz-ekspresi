@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/clock_time.dart';
 import '../../../core/turkish_time.dart';
 import '../../../core/week.dart';
+import '../../../shared/layout.dart';
 import '../../../shared/widgets/day_window.dart';
 import '../../../shared/widgets/draggable_clock.dart';
 import '../../../shared/widgets/scenery_view.dart';
@@ -19,15 +20,20 @@ import 'helpers.dart';
 const _gears = 5;
 
 /// Günün akışı yuvası: küçük pencere ve kadran (Durak 6 ile aynı dil).
-Widget _hourSlot(int hour, bool glow) {
+Widget _hourSlot(BuildContext context, int hour, bool glow) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: [
-      DayWindow(hour: hour.toDouble(), width: 96, height: 64, highlighted: glow),
+      DayWindow(
+        hour: hour.toDouble(),
+        width: 96 * Layout.scale(context),
+        height: 64 * Layout.scale(context),
+        highlighted: glow,
+      ),
       const SizedBox(height: 4),
       SizedBox(
-        width: 72,
-        height: 72,
+        width: 72 * Layout.scale(context),
+        height: 72 * Layout.scale(context),
         child: ClockFrame(
           style: ClockFrameStyle.cab,
           child: DraggableClock(
@@ -132,7 +138,7 @@ final station10 = Station(
             PlaceSlot(
               id: '$hour',
               spoken: TurkishTime.spoken24(ClockTime(hour, 0)),
-              build: (context, filled, glow) => _hourSlot(hour, glow),
+              build: (context, filled, glow) => _hourSlot(context, hour, glow),
             ),
         ],
       ),

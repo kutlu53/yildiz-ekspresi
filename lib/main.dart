@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'features/story/story_flow.dart';
+import 'shared/widgets/orientation_guard.dart';
 
 void main() {
   runApp(const YildizEkspresiApp());
@@ -27,7 +28,7 @@ class YildizEkspresiApp extends StatelessWidget {
         useMaterial3: true,
         visualDensity: VisualDensity.comfortable,
       ),
-      home: const StoryFlow(),
+      home: const OrientationGuard(child: StoryFlow()),
     );
   }
 }

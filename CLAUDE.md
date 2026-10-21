@@ -183,6 +183,7 @@ Açık sorular:
 - Her yeni özellikte kısa bir plan çıkar, sonra uygula; saat/açı mantığı ve mekanik kuralları için birim test yaz.
 - Mekanikleri durak bağımsız yaz; duraklar yalnız içerik ve görsel bağlam versin.
 - Çocuklara yönelik UI: büyük dokunma alanları, yüksek kontrast, okunması zorunlu metin yok, her yazının sesli karşılığı.
+- **Ekran sınıfları** (`lib/shared/layout.dart`): tasarım yatay ekran içindir. Yükseklik < 480 (yatay telefon) "sıkışık" düzen: `MechanicFrame` tabelaları saatin sağına alır, `SceneScaffold` Pamuk sütununu daraltır, nesneler `Layout.scale` ile küçülür. Dikey telefon (`Layout.phonePortrait`) `OrientationGuard` ile "telefonu yan çevir" sahnesine düşer; tablet dikey serbesttir. Görsel kontrol: `VISUAL=1 flutter test --update-goldens test/visual` ekran görüntülerini `test/visual/goldens/` altına üretir ve taşma raporu yazar (CI'de atlanır).
 - Kamera doğruluğu sınıf cihazlarında doğrulanmadan Zaman Kapıları'nı genişletme.
 - Görüntü verisini **asla** diske veya ağa yazma.
 - Kararsız kaldığın tasarım/pedagoji sorularında Bölüm 10'daki açık sorulara dön ve kullanıcıya sor.

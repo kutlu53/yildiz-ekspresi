@@ -285,23 +285,29 @@ class _TitleScreenState extends State<_TitleScreen>
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    final narrow = size.width < 900;
+    final short = size.height < 480;
     return SceneryView(
       scenery: Scenery.station,
       season: 0,
       child: SafeArea(
         child: Stack(
           children: [
-            const Positioned(
+            Positioned(
               left: 24,
               bottom: 0,
-              child: Train(wagons: 1, height: 90),
+              child: Train(wagons: 1, height: short ? 60 : 90),
             ),
             Positioned(
               left: 40,
-              top: 40,
+              top: short ? 16 : 40,
               child: Text(
                 'Yıldız Ekspresi',
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                style: (narrow
+                        ? Theme.of(context).textTheme.headlineMedium
+                        : Theme.of(context).textTheme.displayMedium)
+                    ?.copyWith(
                       fontWeight: FontWeight.w900,
                       color: const Color(0xFF311B92),
                     ),
@@ -310,9 +316,9 @@ class _TitleScreenState extends State<_TitleScreen>
             if (widget.ready)
               Positioned(
                 left: 24,
-                right: 330,
-                top: 120,
-                bottom: 110,
+                right: narrow ? 200 : 330,
+                top: short ? 70 : 120,
+                bottom: short ? 70 : 110,
                 child: RouteMap(
                   stations: StationRegistry.stations,
                   completed: widget.completed,
@@ -327,8 +333,8 @@ class _TitleScreenState extends State<_TitleScreen>
                 ),
               ),
             Positioned(
-              right: 60,
-              bottom: 70,
+              right: narrow ? 24 : 60,
+              bottom: short ? 30 : 70,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: widget.ready ? widget.onStart : null,
@@ -341,7 +347,7 @@ class _TitleScreenState extends State<_TitleScreen>
                       child: const Icon(Icons.touch_app_rounded,
                           size: 56, color: Color(0xFF311B92)),
                     ),
-                    const Pamuk(mood: PamukMood.sleepy, size: 240),
+                    Pamuk(mood: PamukMood.sleepy, size: short ? 150 : 240),
                   ],
                 ),
               ),

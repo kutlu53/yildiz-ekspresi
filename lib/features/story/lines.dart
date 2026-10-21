@@ -353,6 +353,9 @@ class Lines {
   static const armDragHint = Line('arm.dragHint',
       'Elleri sürükle, doğru yerde bırak. Hızlı olursan daha çok puan!');
 
+  static const rotatePhone = Line('ui.rotate',
+      'Telefonu yan çevir, tren öyle daha iyi görünüyor!');
+
   // Devamı (duraklar eksikse)
   static const endSoon = Line('end.soon',
       'Yolculuğumuz burada bekliyor. Yakında devam edecek!');

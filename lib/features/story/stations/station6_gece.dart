@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/clock_time.dart';
 import '../../../core/turkish_time.dart';
+import '../../../shared/layout.dart';
 import '../../../shared/widgets/day_window.dart';
 import '../../../shared/widgets/draggable_clock.dart';
 import '../../../shared/widgets/scenery_view.dart';
@@ -27,11 +28,16 @@ Widget _hourSlot(BuildContext context, int hour, bool filled, bool glow) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: [
-      DayWindow(hour: hour.toDouble(), width: 96, height: 64, highlighted: glow),
+      DayWindow(
+        hour: hour.toDouble(),
+        width: 96 * Layout.scale(context),
+        height: 64 * Layout.scale(context),
+        highlighted: glow,
+      ),
       const SizedBox(height: 4),
       SizedBox(
-        width: 72,
-        height: 72,
+        width: 72 * Layout.scale(context),
+        height: 72 * Layout.scale(context),
         child: ClockFrame(
           style: ClockFrameStyle.cab,
           child: DraggableClock(

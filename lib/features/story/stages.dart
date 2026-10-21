@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../shared/audio/sfx.dart';
+import '../../shared/layout.dart';
 import '../../shared/widgets/train_run.dart';
 import '../mechanics/mechanic_frame.dart';
 import '../mechanics/read_clock.dart';
@@ -43,11 +44,14 @@ class _CabStageState extends State<CabStage> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, c) {
-      final clockSide = math.min(c.maxHeight * 0.5, c.maxWidth * 0.32);
+      final compact = Layout.compact(context);
+      final trainH = compact ? 64.0 : 90.0;
+      final clockSide =
+          math.min(c.maxHeight * (compact ? 0.36 : 0.5), c.maxWidth * 0.32);
       return Stack(
         children: [
           Positioned.fill(
-            bottom: 110,
+            bottom: trainH + 20,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -57,8 +61,9 @@ class _CabStageState extends State<CabStage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        DigitalBoard(text: widget.boardText, fontSize: 40),
-                        const SizedBox(height: 10),
+                        DigitalBoard(
+                            text: widget.boardText, fontSize: compact ? 26 : 40),
+                        SizedBox(height: compact ? 4 : 10),
                         SizedBox(
                           width: clockSide,
                           height: clockSide,
@@ -71,13 +76,16 @@ class _CabStageState extends State<CabStage> {
                 Expanded(
                   flex: 3,
                   child: Center(
-                    child: BigLever(
-                      armed: widget.armed,
-                      onPulled: () {
-                        setState(() => _pulled = true);
-                        widget.onPulled();
-                      },
-                      onStuck: widget.onStuck,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: BigLever(
+                        armed: widget.armed,
+                        onPulled: () {
+                          setState(() => _pulled = true);
+                          widget.onPulled();
+                        },
+                        onStuck: widget.onStuck,
+                      ),
                     ),
                   ),
                 ),
@@ -88,11 +96,11 @@ class _CabStageState extends State<CabStage> {
             left: 0,
             right: 0,
             bottom: 0,
-            height: 110,
+            height: trainH + 20,
             child: TrainRun(
               go: _pulled,
               wagons: 2,
-              height: 90,
+              height: trainH,
               from: 0.3,
               to: 1.4,
               onDone: widget.onDeparted,
@@ -284,8 +292,15 @@ class _WagonSignsState extends State<WagonSigns>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(width: 200, height: 200, child: widget.clock),
-                Container(width: 14, height: 60, color: const Color(0xFF37474F)),
+                SizedBox(
+                  width: Layout.compact(context) ? 130 : 200,
+                  height: Layout.compact(context) ? 130 : 200,
+                  child: widget.clock,
+                ),
+                Container(
+                    width: 14,
+                    height: Layout.compact(context) ? 30 : 60,
+                    color: const Color(0xFF37474F)),
               ],
             ),
           ),
@@ -300,7 +315,7 @@ class _WagonSignsState extends State<WagonSigns>
               builder: (context, _) {
                 final shunt = math.sin(_c.value * 2 * math.pi) * w * 0.06;
                 return SizedBox(
-                  height: 160,
+                  height: Layout.compact(context) ? 120 : 160,
                   child: Stack(
                     clipBehavior: Clip.none,
                     children: [
@@ -416,6 +431,8 @@ class GateStage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, c) {
+      final compact = Layout.compact(context);
+      final trainH = compact ? 64.0 : 90.0;
       final clockSide = math.min(c.maxHeight * 0.42, c.maxWidth * 0.28);
       final gateW = math.min(c.maxWidth * 0.34, 300.0);
       return Stack(
@@ -443,11 +460,11 @@ class GateStage extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 0,
-            height: 110,
+            height: trainH + 20,
             child: TrainRun(
               go: open,
               wagons: 2,
-              height: 90,
+              height: trainH,
               from: 0.3,
               to: 0.86,
               fadeOut: true,

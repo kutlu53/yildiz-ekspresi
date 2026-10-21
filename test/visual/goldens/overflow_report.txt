@@ -1,0 +1,5 @@
+gece-gun_tel-dikey: Multiple exceptions (6) were detected during the running of the current test, and at least one was unexpected.
+vadi-vagonlar_tel-dikey: A RenderFlex overflowed by 276 pixels on the bottom.
+etek-hizli_tel-dikey: A RenderFlex overflowed by 217 pixels on the right.
+yuva-kilit_tel-dikey: A RenderFlex overflowed by 74 pixels on the right.
+kolsaati_tel-dikey: A RenderFlex overflowed by 31 pixels on the right.

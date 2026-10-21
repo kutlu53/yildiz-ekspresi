@@ -47,3 +47,6 @@ app.*.map.json
 # Boş yer tutucu dosyalar (yerel)
 /Oyunun
 /tasarım
+
+# Ekran görüntüleri yeniden üretilir (VISUAL=1 flutter test --update-goldens test/visual)
+/test/visual/goldens/*.png

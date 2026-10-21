@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../shared/layout.dart';
 import '../../shared/widgets/star_burst.dart';
 
 /// Mekaniklerin ortak yerleşimi: üstte dünyadaki nesne (pano, kol, kapı),
@@ -21,25 +22,53 @@ class MechanicFrame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final compact = Layout.compact(context);
+    final stage = Padding(
+      padding: EdgeInsets.all(compact ? 6 : 12),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          body,
+          StarBurst(play: celebrate),
+        ],
+      ),
+    );
+
+    // Yatay telefon: tabelalar saatin altına sığmaz, sağına geçer.
+    if (compact && footer != null) {
+      return Column(
+        children: [
+          if (header != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
+              child: header,
+            ),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(flex: 5, child: stage),
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 4, 8, 8),
+                    child: SingleChildScrollView(child: Center(child: footer)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    }
+
     return Column(
       children: [
         if (header != null)
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+            padding: EdgeInsets.fromLTRB(16, compact ? 4 : 8, 16, 4),
             child: header,
           ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                body,
-                StarBurst(play: celebrate),
-              ],
-            ),
-          ),
-        ),
+        Expanded(child: stage),
         if (footer != null)
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
@@ -94,6 +123,7 @@ class WoodenSign extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = Layout.scale(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -105,9 +135,9 @@ class WoodenSign extends StatelessWidget {
             onTap: onTap,
             borderRadius: BorderRadius.circular(14),
             child: Container(
-              constraints: const BoxConstraints(minWidth: 140, minHeight: 76),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              // Dikkat: `alignment` verilmez; verilirse tabela tüm genişliğe yayılır.
+              constraints: BoxConstraints(minWidth: 140 * s, minHeight: 76 * s),
+              padding: EdgeInsets.symmetric(horizontal: 20 * s, vertical: 12 * s),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
@@ -117,18 +147,22 @@ class WoodenSign extends StatelessWidget {
                   width: 4,
                 ),
               ),
-              child: Text(
-                text,
-                style: TextStyle(
-                  fontSize: 34,
-                  fontWeight: FontWeight.w800,
-                  color: highlighted ? const Color(0xFF263238) : Colors.white,
+              child: Center(
+                widthFactor: 1,
+                heightFactor: 1,
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: 34 * s,
+                    fontWeight: FontWeight.w800,
+                    color: highlighted ? const Color(0xFF263238) : Colors.white,
+                  ),
                 ),
               ),
             ),
           ),
         ),
-        Container(width: 10, height: 26, color: const Color(0xFF4E342E)),
+        Container(width: 10, height: 26 * s, color: const Color(0xFF4E342E)),
       ],
     );
   }

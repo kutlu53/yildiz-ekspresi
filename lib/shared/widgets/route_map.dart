@@ -60,15 +60,20 @@ class RouteMap extends StatelessWidget {
     return LayoutBuilder(builder: (context, c) {
       final w = c.maxWidth;
       final h = c.maxHeight;
+      // Yol dikeyde sınırlı kalsın: dar/uzun ekranda zikzak abartılmaz.
+      final amp = math.min(h * 0.3, w * 0.16);
       final points = [
         for (var i = 0; i < stations.length; i++)
-          RouteMap.positionOf(i, stations.length).scale(w, h),
+          () {
+            final p = RouteMap.positionOf(i, stations.length);
+            return Offset(p.dx * w, h / 2 + (p.dy - 0.5) / 0.3 * amp);
+          }(),
       ];
       final trainIndex = completed.clamp(0, stations.length - 1);
       final trainPos = completed == 0
           ? Offset(points.first.dx - 36, points.first.dy)
           : points[trainIndex];
-      const markerR = 26.0;
+      final markerR = (w / 30).clamp(14.0, 26.0);
       return Stack(
         clipBehavior: Clip.none,
         children: [

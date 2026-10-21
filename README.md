@@ -34,6 +34,7 @@ kamera modu çalışır; MediaPipe modeli ilk açılışta indirilir). İş akı
 flutter pub get
 flutter run -d chrome        # Faz 0 kamera testi için web hedefi
 flutter test                 # birim ve widget testleri; test/e2e: hikâyeyi baştan sona oynayan "robot çocuk"
+VISUAL=1 flutter test --update-goldens test/visual   # telefon/tablet ekran görüntüleri ve taşma raporu (test/visual/goldens)
 flutter build web --release  # build/web altında PWA çıktısı
 python tool/gen_sfx.py       # assets/sfx altındaki efekt ve müzik dosyalarını yeniden üretir (numpy)
 ```

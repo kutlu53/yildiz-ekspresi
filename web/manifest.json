@@ -6,7 +6,7 @@
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
     "description": "Yıldız Ekspresi: analog saat ve zaman öğretim oyunu",
-    "orientation": "any",
+    "orientation": "landscape",
     "prefer_related_applications": false,
     "icons": [
         {

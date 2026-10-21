@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../shared/layout.dart';
 import '../../shared/widgets/pamuk.dart';
 import '../../shared/widgets/scenery_view.dart';
 import 'models.dart';
@@ -38,6 +39,10 @@ class SceneScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final narrow = Layout.narrow(context);
+    final compact = Layout.compact(context);
+    final sideWidth = compact ? 150.0 : (narrow ? 190.0 : 250.0);
+    final pamukSize = compact ? 120.0 : (narrow ? 150.0 : 190.0);
     return SceneryView(
       scenery: scenery,
       season: season,
@@ -63,7 +68,7 @@ class SceneScaffold extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: 250,
+              width: sideWidth,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -73,7 +78,11 @@ class SceneScaffold extends StatelessWidget {
                       duration: const Duration(milliseconds: 250),
                       child: text == null
                           ? const SizedBox(height: 8)
-                          : _Bubble(key: ValueKey(text), text: text),
+                          : _Bubble(
+                              key: ValueKey(text),
+                              text: text,
+                              compact: compact || narrow,
+                            ),
                     ),
                   ),
                   GestureDetector(
@@ -85,7 +94,7 @@ class SceneScaffold extends StatelessWidget {
                       child: ValueListenableBuilder<PamukMood>(
                         valueListenable: mood,
                         builder: (context, m, _) =>
-                            Pamuk(mood: m, size: 190, scarf: scarf),
+                            Pamuk(mood: m, size: pamukSize, scarf: scarf),
                       ),
                     ),
                   ),
@@ -183,24 +192,25 @@ class _PamukReactorState extends State<PamukReactor>
 
 class _Bubble extends StatelessWidget {
   final String text;
+  final bool compact;
 
-  const _Bubble({super.key, required this.text});
+  const _Bubble({super.key, required this.text, this.compact = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(8, 8, 16, 4),
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.all(compact ? 10 : 14),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(18),
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          fontSize: 17,
+        style: TextStyle(
+          fontSize: compact ? 14 : 17,
           fontWeight: FontWeight.w600,
-          color: Color(0xFF263238),
+          color: const Color(0xFF263238),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../shared/audio/sfx.dart';
+import '../../shared/layout.dart';
 import '../story/lines.dart';
 import '../story/models.dart';
 import 'hint_ladder.dart';
@@ -246,8 +247,9 @@ class CardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = Layout.scale(context);
     return Container(
-      width: 104,
+      width: 104 * s,
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
       decoration: BoxDecoration(
         color: placed ? const Color(0xFFC8E6C9) : const Color(0xFFFFF8E1),
@@ -263,13 +265,13 @@ class CardTile extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(card.icon, size: 34, color: const Color(0xFF5D4037)),
+          Icon(card.icon, size: 34 * s, color: const Color(0xFF5D4037)),
           const SizedBox(height: 2),
           Text(
             card.label,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 15,
+            style: TextStyle(
+              fontSize: 15 * s,
               fontWeight: FontWeight.w700,
               color: Color(0xFF263238),
             ),

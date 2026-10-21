@@ -6,6 +6,7 @@ import 'package:flutter/scheduler.dart';
 import '../../core/clock_time.dart';
 import '../../core/turkish_time.dart';
 import '../../shared/audio/sfx.dart';
+import '../../shared/layout.dart';
 import '../../shared/audio/speech.dart';
 import '../../shared/widgets/draggable_clock.dart';
 import '../../shared/widgets/pamuk.dart';
@@ -244,7 +245,9 @@ class _ArmClockScreenState extends State<ArmClockScreen>
                 child: Row(
                   children: [
                     Expanded(flex: 7, child: _stage()),
-                    SizedBox(width: 230, child: _side()),
+                    SizedBox(
+                        width: Layout.narrow(context) ? 150 : 230,
+                        child: _side()),
                   ],
                 ),
               ),
@@ -428,7 +431,7 @@ class _ArmClockScreenState extends State<ArmClockScreen>
             style: const TextStyle(fontSize: 13, color: Color(0xFF263238)),
           ),
         ),
-        Pamuk(mood: mood, size: 190),
+        Pamuk(mood: mood, size: Layout.narrow(context) ? 130 : 190),
       ],
     );
   }

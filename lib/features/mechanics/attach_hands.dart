@@ -87,8 +87,10 @@ class _AttachHandsMechanicState extends State<AttachHandsMechanic> {
           ),
         ),
       ),
-      footer: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      footer: Wrap(
+        alignment: WrapAlignment.spaceEvenly,
+        spacing: 16,
+        runSpacing: 8,
         children: [
           _HandPiece(
             hand: ClockHand.hour,
