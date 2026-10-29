@@ -102,8 +102,11 @@ class _CountMinutesMechanicState extends State<CountMinutesMechanic> {
               draggable: _finished ? const {} : const {ClockHand.minute},
               minuteStep: widget.step,
               linkHands: widget.linkHands,
-              glowHands:
-                  _elapsed == 0 ? const {ClockHand.minute} : const {},
+              // Sayım bitince akrep parlar: bir saatte bir sayı ilerlediği
+              // ancak böyle fark ediliyor (pilot: "akrep hareket etmiyor").
+              glowHands: _finished
+                  ? const {ClockHand.hour}
+                  : (_elapsed == 0 ? const {ClockHand.minute} : const {}),
               onChanged: _onChanged,
             ),
           ),

@@ -294,7 +294,7 @@ void main() {
     await dragHand(tester, fromAngle: 180, toAngle: 540, frac: 0.45, steps: 24);
     await wait();
     expectScene(PlaceCardsMechanic);
-    const dayCards = {'wake': 0, 'breakfast': 1, 'play': 2, 'lunch': 3, 'dinner': 4, 'sleep': 5};
+    const dayCards = {'wake': 0, 'lunch': 1, 'dinner': 2, 'sleep': 3};
     for (final e in dayCards.entries) {
       await dropCard(e.key, e.value);
     }

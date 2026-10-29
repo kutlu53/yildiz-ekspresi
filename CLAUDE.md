@@ -53,7 +53,7 @@ Sınıf ön ayarı: 2. sınıf için 1-3 ve 6-7'nin basit sahneleri; 3. sınıf 
 3. **Say:** Yelkovan sayıdan sayıya sürüklenir, her adımda sayı söylenir (5'er, 1'er). Saat biçimi **Gün Turu** (`TurnDayMechanic`): akrep sürüklenir, 24 adımda bir gün.
 4. **Elleri Tak:** Yerdeki kısa/uzun eller kadrana sürüklenir (Durak 1).
 5. **Hangisi?:** Söylenen ele dokunulur (Durak 1).
-6. **Zili Çal:** Yelkovan kendi döner, hedefe gelince dokunulur; gözlem ve zamanlama (Durak 3).
+6. **Zili Çal:** Yelkovan kendi döner (12°/s), hedefe gelince zile ya da saate dokunulur; kaçırınca yelkovan hedefin gerisine alınır; gözlem ve zamanlama (Durak 3).
 7. **Sırala:** Kartlar (gün akışı, haftanın günleri, aylar) sıraya dizilir ya da doğru yere sürüklenir (`PlaceCardsMechanic`: kart + yuva, yuva kapasitesi ayarlanabilir; mevsim vagonları gibi çoklu yuvalar için de kullanılır).
 8. **Eşleştir:** Dijital-analog (`PickClockMechanic`: hedef dijital, dünyadaki saatlerden doğrusuna dokun), ay-mevsim, 15:00-3 gibi eşlemeler.
 9. **Takvim:** Takvim üstünde gün bulma (`CalendarMechanic`: ay sayfası, doğru güne dokun), "n gün sonra". Hafta ve yıl düzeyinde **Taş Yolu** (`StonePathMechanic`): halka dizili gün/ay taşları, yürü (say) ve seç (n gün sonra) modları.
@@ -119,7 +119,7 @@ Hikâyede bazı geçitler yalnız çocuğun kollarıyla saati göstermesiyle aç
 - **Çatı:** Flutter (mobil + web/PWA), Material 3, `locale: tr`.
 - **Görsel stil:** Düz renkli **vektör** animasyon. Sinematikler ve Pamuk için Rive (durum makineli); sahne geçişleri Flutter animasyonları. Arka planlar katmanlı parallaks.
 - **Ses:** Önce **TTS** (`flutter_tts`, Türkçe, yavaş hız). Tüm replikler tek listeden (`assets/lines/`) kimlikle okunur; gerçek ses kaydı geldiğinde aynı kimliklerle dosyalar değiştirilir. TTS başlatma ve konuşma çağrıları 3 sn zaman aşımlıdır; motor yoksa oyun donmaz, metin uzunluğu kadar bekler.
-- **Efektler ve müzik:** `Sfx` (`lib/shared/audio/sfx.dart`, `audioplayers`). Dosyalar `assets/sfx/<id>.wav`; şimdilik `tool/gen_sfx.py` ile sentezlenir (numpy), gerçek kayıt gelince aynı adla değiştirilir. Dünyadaki nesneler `Cue` ile sarılır (değer değişince ses: kapı → dişli, fener → çan, damla → damla). Merkezi kancalar: el adıma oturunca tık + titreşim (`DraggableClock`), kutlama yıldızlarıyla `success` (`StarBurst`), yanlışta yumuşak `wrong` ve Pamuk sallanır, sahne bitince Pamuk zıplar (`PamukReactor`), durak bitince `cheer`, tren hareket edince düdük + buhar + çuf çuf döngüsü (`CinematicPlayer`). Müzik temaları: sonbahar (1-5), gece (6-7), kış (8-10); öğretmen panelinden efekt ve müzik ayrı ayrı kapatılır. Test ortamında `Sfx.inTest` eklentiyi atlar, yalnızca `log` tutar.
+- **Efektler ve müzik:** `Sfx` (`lib/shared/audio/sfx.dart`, `audioplayers`). Dosyalar `assets/sfx/<id>.wav`; şimdilik `tool/gen_sfx.py` ile sentezlenir (numpy), gerçek kayıt gelince aynı adla değiştirilir. Dünyadaki nesneler `Cue` ile sarılır (değer değişince ses: kapı → dişli, fener → çan, damla → damla). Merkezi kancalar: el adıma oturunca tık + titreşim (`DraggableClock`), kutlama yıldızlarıyla `success` (`StarBurst`), yanlışta yumuşak `wrong` ve Pamuk sallanır, sahne bitince Pamuk zıplar (`PamukReactor`), durak bitince `cheer`, tren hareket edince düdük + buhar + çuf çuf döngüsü (`CinematicPlayer`). Müzik temaları: sonbahar (1-5), gece (6-7), kış (8-10); parça bir kez çalar, 45 sn susar, yeniden çalar (sürekli döngü pilotta sinir bozucu bulundu, 2026-10-29); öğretmen panelinden efekt ve müzik ayrı ayrı kapatılır. Test ortamında `Sfx.inTest` eklentiyi atlar, yalnızca `log` tutar.
 - **Görsel dokunuşlar:** `StarBurst` yıldız + konfeti (`big` durak sonu ve jenerikte, `CinematicPlayer.celebrate`), `SteamPuffs` buhar pufları (kalkış kolu, lokomotif bacası; dururken tembel küçük puflar), kapı ve kilit açılınca içeriden ışık (`GateProp`, `LockProp`), sürüklenen el parlar.
 - Sürüklenebilir analog saat: `CustomPainter` + `GestureDetector`; kadran çizimi `lib/shared/widgets/clock_face.dart`.
 - Saat/açı mantığı UI'dan ayrı, test edilebilir saf Dart (`lib/core/clock_time.dart`, `lib/core/angle_mapper.dart`).
@@ -159,7 +159,7 @@ Hikâyede bazı geçitler yalnız çocuğun kollarıyla saati göstermesiyle aç
 - Oyun sonu modu, sınıf modu, ikili mod, öğretmen paneli
 
 **Faz 4: Pilot**
-- Birkaç öğrenciyle gözlem, takılma noktalarına göre düzeltme
+- Birkaç öğrenciyle gözlem, takılma noktalarına göre düzeltme (ilk tur 2026-10-29: müzik, tren/kapı boyu, zil, TTS kesilmesi, Durak 6 gün bölümleri, Şubat 29, Durak 10 kilit, kamera hata mesajı; ayrıntı `docs/senaryo.md` son bölüm)
 - Gerçek ses kaydıyla TTS'in değiştirilmesi
 
 ## 10. Kararlar ve Açık Sorular

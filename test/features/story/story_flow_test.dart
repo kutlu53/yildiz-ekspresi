@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zaman_bekcisi/features/story/lines.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zaman_bekcisi/features/story/progress_store.dart';
 import 'package:zaman_bekcisi/features/story/story_flow.dart';
@@ -24,7 +25,7 @@ void main() {
     await tester.tap(find.byType(Pamuk));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 800));
-    expect(find.text('Hııı... Ne kadar uyumuşum ben böyle?'), findsOneWidget);
+    expect(find.text(Lines.prologWake.text), findsOneWidget);
 
     // Her dokunuş bir çekim ilerletir; 4 çekim.
     for (var i = 0; i < 4; i++) {

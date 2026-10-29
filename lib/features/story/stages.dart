@@ -45,7 +45,7 @@ class _CabStageState extends State<CabStage> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, c) {
       final compact = Layout.compact(context);
-      final trainH = compact ? 64.0 : 90.0;
+      final trainH = compact ? 64.0 : 110.0;
       final clockSide =
           math.min(c.maxHeight * (compact ? 0.36 : 0.56), c.maxWidth * 0.36);
       return Stack(
@@ -434,10 +434,10 @@ class GateStage extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, c) {
       final compact = Layout.compact(context);
-      final trainH = compact ? 64.0 : 90.0;
+      final trainH = compact ? 64.0 : 110.0;
       final clockSide = math.min(c.maxHeight * 0.42, c.maxWidth * 0.28);
-      final gateW = math.min(c.maxWidth * 0.34, 300.0);
-      final gateH = c.maxHeight * (compact ? 0.72 : 0.8);
+      final gateW = math.min(c.maxWidth * 0.26, 230.0);
+      final gateH = c.maxHeight * (compact ? 0.62 : 0.6);
       return Stack(
         children: [
           Positioned(

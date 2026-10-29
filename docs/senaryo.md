@@ -381,3 +381,36 @@ doğrulanacak; bu belge pedagojik sırayı tanımlar.
 - Ses: önce TTS (Türkçe, yavaş hız), replikler tek listeden okunur. Gerçek
   ses kaydı geldiğinde aynı kimliklerle dosyalar değiştirilir. Efektler:
   düdük, buhar, zil, dişli, kar. Müzik: duraklara göre tema varyasyonları.
+
+## 8. Pilot geri bildirimi ve düzeltmeler (2026-10-29)
+
+İlk sınıf denemesinden gelen liste ve yapılanlar:
+
+- **Müzik:** 3-7 sn'lik döngüler sürekli tekrar edince sinir bozucuydu. Parçalar
+  20-35 sn'lik, seyrek ve yavaş yeniden yazıldı; `Sfx` bir kez çalar, 45 sn
+  susar, yeniden çalar (`musicGap`). Ses 0,25.
+- **Tren** sinematikte ve başlıkta büyütüldü (90 → 130 px; sıkışık düzende 64).
+- **Durak 2 kapısı** küçültüldü (genişlik %34 → %26, yükseklik %80 → %60).
+- **Durak 4 akrep:** Akrep gerçek saatteki gibi dakikada yarım derece ilerler;
+  5'er adımda bu fark edilmiyor ("akrep hareket etmiyor"). Sayım bitince akrep
+  parlar ve Pamuk "kısa akrep de dokuzdan ona geçti" der.
+- **Durak 3 zil:** Yelkovan 18°/s → 12°/s (bir tur 30 sn), tolerans 9° → 12°
+  (2 sn'lik pencere). Zil simgesi de dokunulabilir. Kaçırınca yelkovan hedefin
+  100° gerisine alınır; çocuk bir tur beklemez.
+- **Seslendirme:** Geç gelen iptal/bitiş olayı yeni repliği anında kapatıp
+  sıradaki repliğin konuşmayı kesmesine yol açıyordu; motor ilk açılışta geç
+  cevap verince TTS oturum boyunca kapanıyordu. İkisi de giderildi (`Speech`).
+- **Durak 6 günün bölümleri:** Altı kart (kahvaltı 8, oyun 10 aynı "sabah"
+  penceresinde) dörde indi: uyanma 7 sabah, öğle yemeği 12, akşam yemeği 18,
+  uyku 22 (gece); yuvalarda bölüm adı yazar (Sabah, Öğlen, Akşam, Gece).
+- **Şubat 29:** Durak 8 ev sahnesinde Şubat için "dört yılda bir, bir gün
+  büyür: yirmi dokuz" eklendi; kapanış repliği de söyler.
+- **Pamuk ayıdır:** Prologda kendini "uykucu ayı Pamuk" diye tanıtır; Durak 7'de
+  arılar konuşmaz, "arılar güldü" cümleleri Pamuk'undur.
+- **Durak 10 kilit:** Birinci dişli sahnesinde her saat kurulumunda "dişli döndü,
+  kapı biraz açıldı" deniyor ve kapı aralanıyordu; artık yalnız üçüncü saatte
+  dişli döner, kapı o zaman kıpırdar (`SetClockRound.successLine`).
+- **Kamera:** Önce kamera açılır, model sonra yüklenir (yavaş ağda "kamera
+  açılmadı" sanılıyordu); https dışında ve CDN engelliyken Türkçe neden
+  gösterilir (`describeCameraError`). Model ve köprü hâlâ CDN'den gelir;
+  okul ağında engelliyse yerel paketleme gerekir (açık soru).

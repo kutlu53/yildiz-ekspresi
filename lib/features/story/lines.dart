@@ -35,7 +35,7 @@ class Lines {
 
   // Prolog
   static const prologWake =
-      Line('prolog.wake', 'Hııı... Ne kadar uyumuşum ben böyle?');
+      Line('prolog.wake', 'Hııı... Ben Pamuk, uykucu ayı Pamuk. Ne kadar uyumuşum ben böyle?');
   static const prologClock =
       Line('prolog.clock', 'Saatimin elleri düşmüş! Saat kaç, bilmiyorum.');
   static const prologSnow = Line('prolog.snow',
@@ -108,13 +108,13 @@ class Lines {
   static const s3HalfDone = Line('s3.halfDone',
       'Bak, akrep iki sayının tam ortasında kaldı. Buçuk böyle olur!');
   static const s3BellIntro = Line('s3.bellIntro',
-      'Köprü zili çeyrekte çalınır. Yelkovan dönüyor; tam üçe gelince zile dokun!');
+      'Köprü zili çeyrekte çalınır. Yelkovan dönüyor; tam üçe gelince zile dokun! Kaçırırsan yelkovanı geri alırım, yeniden deneriz.');
   static const s3BellTo = Line('s3.bellTo',
       'Şimdi çeyrek var: yelkovan dokuza gelince dokun.');
   static const s3BellEarly =
       Line('s3.bellEarly', 'Biraz erken, yelkovan daha gelmedi.');
   static const s3BellLate =
-      Line('s3.bellLate', 'Geç kaldık, yelkovan geçti. Bir tur daha bekleyelim.');
+      Line('s3.bellLate', 'Geç kaldık, yelkovan geçti. Geri alıyorum, bir daha dene.');
   static const s3BellDone = Line('s3.bellDone', 'Tam zamanında! Zil çaldı.');
   static const s3ReadIntro = Line('s3.readIntro',
       'Bekçi kedi soruyor: köprü saati ne diyor? Doğru tabelaya dokun.');
@@ -133,7 +133,7 @@ class Lines {
   static const s4Count = Line('s4.count',
       'Yelkovanı sayıdan sayıya götür. Her sayıda beş dakika geçer, fener parlar.');
   static const s4CountDone = Line('s4.countDone',
-      'Altmış dakika, bir tam saat! Yelkovan bir tur attı, tünel aydınlandı.');
+      'Altmış dakika, bir tam saat! Yelkovan bir tur attı; bak, kısa akrep de dokuzdan ona geçti. Tünel aydınlandı.');
   static const s4SetIntro = Line('s4.setIntro',
       'Şimdi fenerin yağ saati. Söylediğim dakikaya kur, fener yansın.');
   static const s4SetHint = Line('s4.setHint',
@@ -243,7 +243,7 @@ class Lines {
   static const s8HousesHint = Line('s8.housesHint',
       'Sarı tepeye bak: tepede mi, çukurda mı? Tepe otuz bir, çukur otuz.');
   static const s8HousesDone = Line('s8.housesDone',
-      'Evleri saydık! Tepeler otuz bir, çukurlar otuz, Şubat yirmi sekiz.');
+      'Evleri saydık! Tepeler otuz bir, çukurlar otuz, Şubat yirmi sekiz; dört yılda bir yirmi dokuz.');
   static const s8WagonsIntro = Line('s8.wagonsIntro',
       'Dört vagon, dört mevsim. Ay kartlarını doğru vagona yükle; manzara değişir.');
   static const s8WagonsWrong = Line('s8.wagonsWrong',

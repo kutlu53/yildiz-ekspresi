@@ -66,7 +66,8 @@ class _WebPoseSource implements PoseSource {
       if (raw != null) return _ZamanPoseApi._(raw);
       await Future<void>.delayed(const Duration(milliseconds: 100));
     }
-    throw StateError('pose.js yüklenemedi (zamanPose bulunamadı).');
+    throw StateError(
+        'pose.js yüklenemedi (zamanPose bulunamadı); internet ya da engellenen CDN.');
   }
 
   Future<web.HTMLVideoElement> _waitForVideo() async {

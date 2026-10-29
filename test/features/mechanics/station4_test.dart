@@ -40,6 +40,9 @@ void main() {
     expect(lantern.level, 1);
     expect(c.spoken.last, Lines.s4CountDone.text);
     expect(c.completed, 1);
+    // Sayım bitince akrep parlar: bir saatte bir sayı ilerlediği görülsün.
+    final clock = tester.widget<DraggableClock>(find.byType(DraggableClock));
+    expect(clock.glowHands, {ClockHand.hour});
   });
 
   testWidgets('Kur 5\'er: yardım merdiveni özel sayma ipucunu okur',

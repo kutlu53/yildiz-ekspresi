@@ -78,17 +78,7 @@ class _CameraTestScreenState extends State<CameraTestScreen> {
     }
   }
 
-  String _describeError(Object e) {
-    final text = e.toString();
-    if (text.contains('NotAllowedError') || text.contains('Permission')) {
-      return 'Kamera izni verilmedi. Tarayıcı adres çubuğundan kameraya izin '
-          'verip yeniden dene.';
-    }
-    if (text.contains('NotFoundError')) {
-      return 'Bu cihazda kamera bulunamadı.';
-    }
-    return 'Kamera başlatılamadı: $text';
-  }
+  String _describeError(Object e) => describeCameraError(e);
 
   void _onFrame(PoseFrame frame) {
     final hour = frame.hourArm?.angle;

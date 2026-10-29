@@ -13,17 +13,24 @@ import '../../mechanics/turn_day.dart';
 import '../lines.dart';
 import '../models.dart';
 
-/// Pamuk'un günü: etkinlik ve saati (24 saatlik).
+/// Pamuk'un günü: günün dört bölümünden birer etkinlik (24 saatlik).
+/// Pilotta altı kart (kahvaltı 8, oyun 10 gibi aynı bölümde iki an) kafa
+/// karıştırdı; her bölüm için tek an kaldı (2026-10-29).
 const _dayPlan = <(String id, String label, IconData icon, int hour)>[
   ('wake', 'Uyanma', Icons.alarm, 7),
-  ('breakfast', 'Kahvaltı', Icons.bakery_dining, 8),
-  ('play', 'Oyun', Icons.sports_soccer, 10),
   ('lunch', 'Öğle yemeği', Icons.restaurant, 12),
   ('dinner', 'Akşam yemeği', Icons.dinner_dining, 18),
-  ('sleep', 'Uyku', Icons.bedtime, 21),
+  ('sleep', 'Uyku', Icons.bedtime, 22), // 22: "gece"; 21 hâlâ "akşam" sayılır
 ];
 
-/// Yuva görünümü: küçük pencere (manzara saati doğrular) ve küçük kadran.
+/// Günün bölümü, yuva etiketi için baş harfi büyük.
+String _dayPartLabel(int hour) {
+  final part = TurkishTime.dayPart(hour);
+  return part[0].toUpperCase() + part.substring(1);
+}
+
+/// Yuva görünümü: küçük pencere (manzara saati doğrular), günün bölümü ve
+/// küçük kadran.
 Widget _hourSlot(BuildContext context, int hour, bool filled, bool glow) {
   return Column(
     mainAxisSize: MainAxisSize.min,
@@ -34,7 +41,16 @@ Widget _hourSlot(BuildContext context, int hour, bool filled, bool glow) {
         height: 64 * Layout.scale(context),
         highlighted: glow,
       ),
-      const SizedBox(height: 4),
+      const SizedBox(height: 2),
+      Text(
+        _dayPartLabel(hour),
+        style: TextStyle(
+          fontSize: 16 * Layout.scale(context),
+          fontWeight: FontWeight.w800,
+          color: glow ? const Color(0xFFFFD54F) : Colors.white,
+        ),
+      ),
+      const SizedBox(height: 2),
       SizedBox(
         width: 72 * Layout.scale(context),
         height: 72 * Layout.scale(context),

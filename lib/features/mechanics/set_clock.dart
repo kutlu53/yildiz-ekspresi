@@ -21,12 +21,17 @@ class SetClockRound {
   /// Tur başında okunan ek replik (ör. "şimdi tek tek dakikalar").
   final Line? lead;
 
+  /// Bu turun başarı repliği; verilmezse mekaniğin `successLine`'ı okunur
+  /// (ör. kilit sahnesinde yalnız son tur "dişli döndü" der).
+  final Line? successLine;
+
   const SetClockRound({
     required this.target,
     required this.start,
     required this.spokenPrompt,
     this.minuteStep,
     this.lead,
+    this.successLine,
   });
 }
 
@@ -144,7 +149,8 @@ class _SetClockMechanicState extends State<SetClockMechanic> {
         _done = true;
         _celebrate++;
       });
-      await widget.controller.say(widget.successLine ?? Lines.wellDone);
+      await widget.controller
+          .say(_current.successLine ?? widget.successLine ?? Lines.wellDone);
       if (!mounted) return;
       if (_round + 1 < widget.rounds.length) {
         await Future<void>.delayed(const Duration(milliseconds: 600));

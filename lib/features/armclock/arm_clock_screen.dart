@@ -94,7 +94,7 @@ class _ArmClockScreenState extends State<ArmClockScreen>
       if (!mounted) return;
       setState(() {
         _cameraLoading = false;
-        _cameraError = '$e';
+        _cameraError = describeCameraError(e);
         _cameraMode = false;
       });
       _say(Lines.armCameraFallback);
@@ -355,11 +355,26 @@ class _ArmClockScreenState extends State<ArmClockScreen>
                     ),
                   if (_phase == _Phase.calibrate && !_cameraMode)
                     _Veil(
-                      child: _BigTap(
-                        key: const ValueKey('arm-start'),
-                        icon: Icons.play_arrow_rounded,
-                        label: 'Başla',
-                        onTap: _startCountdown,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _BigTap(
+                            key: const ValueKey('arm-start'),
+                            icon: Icons.play_arrow_rounded,
+                            label: 'Başla',
+                            onTap: _startCountdown,
+                          ),
+                          if (_cameraError != null) ...[
+                            const SizedBox(height: 12),
+                            // Öğretmen için neden: izin, https, internet.
+                            Text(
+                              _cameraError!,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  color: Colors.white70, fontSize: 16),
+                            ),
+                          ],
+                        ],
                       ),
                     ),
                   if (_phase == _Phase.countdown)

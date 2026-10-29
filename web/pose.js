@@ -60,8 +60,14 @@ async function ensureLandmarker() {
 async function start(videoElement, onFrame) {
   if (running) return;
   video = videoElement;
-  await ensureLandmarker();
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    throw new Error(
+      "navigator.mediaDevices yok: kamera yalnız https (güvenli bağlantı) altında açılır."
+    );
+  }
 
+  // Önce kamera: izin sorusu ve önizleme hemen gelsin; model (birkaç MB)
+  // sonra yüklenir. Önceki sırada yavaş ağda kamera hiç açılmıyor sanılıyordu.
   stream = await navigator.mediaDevices.getUserMedia({
     video: {
       facingMode: "user",
@@ -76,6 +82,15 @@ async function start(videoElement, onFrame) {
     else video.onloadeddata = () => resolve();
   });
   await video.play();
+
+  try {
+    await ensureLandmarker();
+  } catch (e) {
+    for (const track of stream.getTracks()) track.stop();
+    stream = null;
+    video.srcObject = null;
+    throw new Error("pose.js modeli yüklenemedi (internet gerekli): " + e);
+  }
 
   running = true;
   frameCount = 0;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../shared/audio/sfx.dart';
 import '../../shared/audio/speech.dart';
+import '../../shared/layout.dart';
 import '../../shared/widgets/pamuk.dart';
 import '../../shared/widgets/scenery_view.dart';
 import '../../shared/widgets/star_burst.dart';
@@ -139,7 +140,7 @@ class _CinematicPlayerState extends State<CinematicPlayer> {
                 child: Train(
                   wagons: widget.wagons,
                   moving: shot.trainMoving,
-                  height: 90,
+                  height: Layout.compact(context) ? 64 : 130,
                 ),
               ),
             if (shot.items.isNotEmpty)

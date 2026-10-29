@@ -46,7 +46,11 @@ class Sfx {
 
   bool enabled = true;
   bool musicEnabled = true;
-  double musicVolume = 0.35;
+  double musicVolume = 0.25;
+
+  /// Müzik aralıklı çalar: tema bir kez çalınır, bu kadar susulur, yeniden
+  /// çalınır. Sürekli döngü pilotta sinir bozucu bulundu (2026-10-29).
+  Duration musicGap = const Duration(seconds: 45);
 
   /// Son çalınan efektler (testler ve hata ayıklama için).
   final List<SfxId> log = [];
@@ -56,6 +60,8 @@ class Sfx {
   final List<AudioPlayer> _pool = [];
   int _next = 0;
   AudioPlayer? _music;
+  Timer? _musicTimer;
+  StreamSubscription<void>? _musicDone;
   AudioPlayer? _chug;
 
   static MusicTheme themeFor(int stationNumber) {
@@ -129,7 +135,9 @@ class Sfx {
     }
   }
 
-  /// Müzik döngüsünü başlatır; aynı tema çalıyorsa dokunmaz. `null` durdurur.
+  /// Temayı başlatır; aynı tema zaten seçiliyse dokunmaz. `null` durdurur.
+  /// Tema bir kez çalınır, `musicGap` kadar susulur, yeniden çalınır; sürekli
+  /// döngü yoktur.
   Future<void> music(MusicTheme? theme) async {
     if (theme == null) {
       await stopMusic();
@@ -137,9 +145,15 @@ class Sfx {
     }
     if (theme == currentTheme) return;
     currentTheme = theme;
+    _musicTimer?.cancel();
     if (!enabled || !musicEnabled || inTest) return;
+    await _playTheme(theme);
+  }
+
+  Future<void> _playTheme(MusicTheme theme) async {
     try {
-      final p = _music ??= AudioPlayer()..setReleaseMode(ReleaseMode.loop);
+      final p = _music ??= AudioPlayer()..setReleaseMode(ReleaseMode.stop);
+      _musicDone ??= p.onPlayerComplete.listen((_) => _scheduleNext());
       await p.stop();
       await p.play(AssetSource('sfx/music_${theme.name}.wav'),
           volume: musicVolume);
@@ -148,8 +162,22 @@ class Sfx {
     }
   }
 
+  /// Parça bitti: sessizlikten sonra aynı temayı yeniden çalar.
+  void _scheduleNext() {
+    _musicTimer?.cancel();
+    final theme = currentTheme;
+    if (theme == null) return;
+    _musicTimer = Timer(musicGap, () {
+      if (currentTheme == theme && enabled && musicEnabled) {
+        unawaited(_playTheme(theme));
+      }
+    });
+  }
+
   Future<void> stopMusic() async {
     currentTheme = null;
+    _musicTimer?.cancel();
+    _musicTimer = null;
     try {
       await _music?.stop();
     } catch (_) {}

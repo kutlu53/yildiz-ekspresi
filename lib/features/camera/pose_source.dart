@@ -31,3 +31,25 @@ abstract class PoseSource {
 }
 
 PoseSource createPoseSource() => impl.createPoseSource();
+
+/// Kamera açılamayınca çocuğa/öğretmene okunacak Türkçe açıklama.
+String describeCameraError(Object e) {
+  final text = e.toString();
+  if (text.contains('NotAllowedError') || text.contains('Permission')) {
+    return 'Kamera izni verilmedi. Tarayıcı adres çubuğundan kameraya izin '
+        'verip yeniden dene.';
+  }
+  if (text.contains('NotFoundError')) {
+    return 'Bu cihazda kamera bulunamadı.';
+  }
+  if (text.contains('NotReadableError') || text.contains('TrackStartError')) {
+    return 'Kamera başka bir uygulama tarafından kullanılıyor.';
+  }
+  if (text.contains('mediaDevices') || text.contains('https')) {
+    return 'Kamera yalnız güvenli bağlantıda (https) açılır.';
+  }
+  if (text.contains('zamanPose') || text.contains('pose.js')) {
+    return 'Kamera modülü yüklenemedi; ilk açılışta internet bağlantısı gerekir.';
+  }
+  return 'Kamera başlatılamadı: $text';
+}

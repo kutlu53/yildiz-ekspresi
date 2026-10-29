@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zaman_bekcisi/core/clock_time.dart';
 import 'package:zaman_bekcisi/features/mechanics/stop_hand.dart';
@@ -30,9 +31,13 @@ void main() {
     expect(c.mistakes, 1);
     expect(c.spoken.last, Lines.s3BellEarly.text);
 
-    // Hedefe 2 sn kaldı: 1,5 sn daha bekle (toplam ~2 sn → 90°).
-    await tester.pump(const Duration(milliseconds: 1500));
-    await tester.tap(find.byType(DraggableClock));
+    // Kaçırınca yelkovan hedefin 100° gerisine alınır: 90 - 100 = 350°.
+    clock = tester.widget<DraggableClock>(find.byType(DraggableClock));
+    expect(clock.time.minuteHandAngle, closeTo(350, 3));
+
+    // 60°/s ile ~1,65 sn sonra 89°: tolerans içinde; bu kez zile dokunulur.
+    await tester.pump(const Duration(milliseconds: 1650));
+    await tester.tap(find.byKey(const ValueKey('bell')));
     await tester.pump();
     expect(c.completed, 1);
     expect(c.spoken.last, Lines.s3BellDone.text);

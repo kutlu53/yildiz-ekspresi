@@ -31,8 +31,9 @@ ChoiceRound _houseRound(int month) {
     prompt: '${Year.name(month)} kasabası. Tepede mi, çukurda mi? Kaç gün?',
     options: _dayOptions,
     correct: correct,
-    successSpoken:
-        '${Year.name(month)} $where: ${TurkishTime.number(days)} gün.',
+    successSpoken: month == 1
+        ? 'Şubat en küçük ev: yirmi sekiz gün. Dört yılda bir, bir gün büyür: yirmi dokuz gün.'
+        : '${Year.name(month)} $where: ${TurkishTime.number(days)} gün.',
   );
 }
 

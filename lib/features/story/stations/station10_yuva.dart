@@ -75,14 +75,16 @@ final station10 = Station(
       build: (context, c) => SetClockMechanic(
         controller: c,
         intro: Lines.s10Set,
-        successLine: Lines.s10Gear,
+        successLine: Lines.wellDone,
         wrongLine: Lines.s10Wrong,
         draggable: const {ClockHand.hour, ClockHand.minute},
         minuteStep: 5,
         linkHands: true,
         frame: ClockFrameStyle.gold,
+        // Dişli üç saat de kurulunca döner; ara turlarda kapı kıpırdamaz
+        // (pilot: "kapı beşinci dişliden önce açıldı").
         prop: (done, solved) =>
-            LockProp(gears: solved == 3 ? 1 : 0, total: _gears, turning: done),
+            LockProp(gears: 0, total: _gears, turning: done && solved == 3),
         rounds: [
           SetClockRound(
             target: const ClockTime(5, 0),
@@ -98,6 +100,7 @@ final station10 = Station(
             target: const ClockTime(2, 45),
             start: const ClockTime(12, 0),
             spokenPrompt: TurkishTime.spoken(const ClockTime(2, 45)),
+            successLine: Lines.s10Gear,
           ),
         ],
       ),
@@ -131,10 +134,10 @@ final station10 = Station(
               id: 'lunch', label: 'Öğle yemeği', icon: Icons.restaurant, slotId: '12'),
           PlaceCard(
               id: 'dinner', label: 'Akşam yemeği', icon: Icons.dinner_dining, slotId: '18'),
-          PlaceCard(id: 'sleep', label: 'Uyku', icon: Icons.bedtime, slotId: '21'),
+          PlaceCard(id: 'sleep', label: 'Uyku', icon: Icons.bedtime, slotId: '22'),
         ],
         slots: [
-          for (final hour in const [7, 12, 18, 21])
+          for (final hour in const [7, 12, 18, 22])
             PlaceSlot(
               id: '$hour',
               spoken: TurkishTime.spoken24(ClockTime(hour, 0)),

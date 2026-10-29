@@ -187,30 +187,54 @@ def main():
         parts.append(np.zeros(int(SR * 0.13)))
     write("chug", np.concatenate(parts), 0.45)
 
-    # --- müzik döngüleri (yumuşak, düşük ses) ---
-    def loop(melody, bass, dur, wave_m=triangle):
+    # --- müzik parçaları (yumuşak, düşük ses) ---
+    # Pilot (2026-10-29): 3-7 sn'lik döngüler sürekli tekrar edince sinir
+    # bozucu bulundu. Parçalar 20-35 sn, seyrek notalı ve yavaş; `Sfx` bir
+    # kez çalar, 45 sn susar, yeniden çalar.
+    def piece(melody, bass, dur, wave_m=triangle, bass_mult=2):
         m = seq(melody, dur, wave_m, gap=0.01)
-        b = seq(bass, dur * 2, np.sin, gap=0.01)
-        out = mix(m, b * 0.5)
-        return delay(out, 0.25, 0.25)[: len(m)]
+        b = seq(bass, dur * bass_mult, np.sin, gap=0.01)
+        out = mix(m, b * 0.45)
+        return delay(out, 0.3, 0.2)[: len(m)]
 
-    # sonbahar: neşeli, hafif
-    write("music_autumn", loop(
-        [N["C5"], N["E5"], N["G5"], N["E5"], N["A4"], N["C5"], N["E5"], N["C5"],
-         N["F4"], N["A4"], N["C5"], N["A4"], N["G4"], N["B4"], N["D5"], N["B4"]],
-        [N["C3"], N["A3"], N["F3"], N["G3"]], 0.22), 0.35)
+    R = (None, 1)  # bir vuruş sus
 
-    # gece: sakin, yavaş
-    write("music_night", loop(
-        [N["E4"], N["G4"], N["B4"], (None, 1), N["A4"], N["G4"], N["E4"], (None, 1),
-         N["D4"], N["F4"], N["A4"], (None, 1), N["G4"], N["E4"], N["D4"], (None, 1)],
-        [N["E3"], N["A3"], N["D3"], N["G3"]], 0.4, np.sin), 0.3)
+    # sonbahar: sıcak, salınan ninni (yaklaşık 22 sn)
+    write("music_autumn", piece(
+        [N["C5"], N["E5"], N["G5"], R, N["E5"], N["D5"], (N["C5"], 2), R,
+         N["A4"], N["C5"], N["E5"], R, N["D5"], (N["C5"], 2), (None, 2),
+         N["G4"], N["A4"], N["C5"], R, N["E5"], N["D5"], (N["C5"], 2), R,
+         N["F4"], N["A4"], N["C5"], R, N["B4"], (N["G4"], 2), (None, 2),
+         N["C5"], R, N["E5"], R, N["G5"], R, (N["E5"], 2), (None, 2),
+         (N["C5"], 3), (None, 3)],
+        [N["C3"], N["A3"], N["F3"], N["G3"], N["C3"], N["A3"], N["F3"], N["G3"],
+         N["E3"], N["G3"], N["C3"], N["C3"], N["A3"], N["F3"], N["G3"], N["C3"],
+         N["C3"], N["A3"], N["F3"], N["G3"], N["C3"], N["C3"], N["C3"], N["C3"]],
+        0.45), 0.28)
 
-    # kış: parlak, tınlayan
-    write("music_winter", loop(
-        [N["G5"], N["E5"], N["C5"], N["E5"], N["A5"], N["E5"], N["C5"], N["E5"],
-         N["F5"], N["D5"], N["B4"], N["D5"], N["G5"], N["D5"], N["B4"], N["D5"]],
-        [N["C3"], N["A3"], N["G3"], N["G3"]], 0.2), 0.32)
+    # gece: çok yavaş, uzun seslerle (yaklaşık 35 sn)
+    write("music_night", piece(
+        [N["E4"], R, N["G4"], R, (N["B4"], 2), (None, 2), N["A4"], R, N["G4"], R,
+         (N["E4"], 3), (None, 3),
+         N["D4"], R, N["F4"], R, (N["A4"], 2), (None, 2), N["G4"], R,
+         (N["E4"], 3), (None, 3),
+         N["B3"], R, N["D4"], R, (N["E4"], 2), (None, 2), (N["G4"], 2), R,
+         (N["E4"], 4), (None, 4)],
+        [(N["E3"], 2), (N["A3"], 2), (N["D3"], 2), (N["G3"], 2), (N["E3"], 2),
+         (N["A3"], 2), (N["D3"], 2), (N["G3"], 2), (N["E3"], 2), (N["E3"], 2),
+         (N["E3"], 2), (N["E3"], 2), (N["E3"], 2)],
+        0.7, np.sin, bass_mult=2), 0.24)
+
+    # kış: berrak, seyrek çan sesleri (yaklaşık 26 sn)
+    write("music_winter", piece(
+        [N["G5"], R, N["E5"], R, N["C5"], (None, 2), N["E5"], N["G5"], (N["A5"], 2), (None, 2),
+         N["F5"], R, N["D5"], R, N["B4"], (None, 2), N["D5"], N["F5"], (N["G5"], 2), (None, 2),
+         N["E5"], R, N["C5"], R, N["G4"], (None, 2), (N["C5"], 2), R, (N["E5"], 3), (None, 3),
+         N["G5"], R, (N["E5"], 2), R, (N["C5"], 4), (None, 4)],
+        [N["C3"], N["A3"], N["G3"], N["G3"], N["C3"], N["A3"], N["G3"], N["G3"],
+         N["C3"], N["A3"], N["F3"], N["G3"], N["C3"], N["C3"], N["C3"], N["C3"],
+         N["C3"], N["C3"], N["C3"], N["C3"]],
+        0.4), 0.26)
 
 
 if __name__ == "__main__":

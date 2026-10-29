@@ -297,7 +297,7 @@ class _TitleScreenState extends State<_TitleScreen>
             Positioned(
               left: 24,
               bottom: 0,
-              child: Train(wagons: 1, height: short ? 60 : 90),
+              child: Train(wagons: 1, height: short ? 64 : 120),
             ),
             Positioned(
               left: 40,

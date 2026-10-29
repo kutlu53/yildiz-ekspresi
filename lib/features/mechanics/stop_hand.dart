@@ -27,11 +27,15 @@ class StopHandMechanic extends StatefulWidget {
   final Line? intro;
   final Line? successLine;
 
-  /// Saniyede derece. 18°/s: bir tur 20 sn.
+  /// Saniyede derece. 12°/s: bir tur 30 sn (pilotta 18°/s hızlı bulundu).
   final double degreesPerSecond;
 
-  /// Kabul toleransı (derece). 9° = 1,5 dakika.
+  /// Kabul toleransı (derece). 12° = 2 dakika; 12°/s hızda 2 sn'lik pencere.
   final double tolerance;
+
+  /// Kaçırınca yelkovan hedefin bu kadar gerisine alınır; çocuk bir tur
+  /// beklemez.
+  static const restartDegrees = 100.0;
 
   const StopHandMechanic({
     super.key,
@@ -40,8 +44,8 @@ class StopHandMechanic extends StatefulWidget {
     this.frame = ClockFrameStyle.tower,
     this.intro,
     this.successLine,
-    this.degreesPerSecond = 18,
-    this.tolerance = 9,
+    this.degreesPerSecond = 12,
+    this.tolerance = 12,
   });
 
   @override
@@ -135,14 +139,26 @@ class _StopHandMechanicState extends State<StopHandMechanic> {
     widget.controller.mistake();
     await widget.controller
         .say(signed < 0 ? Lines.s3BellEarly : Lines.s3BellLate);
-    if (mounted) setState(() => _busy = false);
+    if (!mounted) return;
+    setState(() {
+      _busy = false;
+      // Yeniden deneme: yelkovan hedefin gerisinden tekrar yaklaşır.
+      _minuteAngle = AngleMapper.normalize(
+          _current.target.minuteHandAngle - StopHandMechanic.restartDegrees);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MechanicFrame(
       celebrate: _celebrate,
-      header: _Bell(ringing: _rang),
+      // Zil de dokunulabilir: Pamuk "zile dokun" der, çocuk zile basar.
+      header: GestureDetector(
+        key: const ValueKey('bell'),
+        behavior: HitTestBehavior.opaque,
+        onTapDown: (_) => _tap(),
+        child: _Bell(ringing: _rang),
+      ),
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTapDown: (_) => _tap(),
@@ -181,7 +197,7 @@ class _Bell extends StatelessWidget {
         duration: const Duration(milliseconds: 150),
         child: Icon(
           Icons.notifications_active_rounded,
-          size: 64,
+          size: 96,
           color: ringing ? const Color(0xFFFFB300) : const Color(0xFF8D6E63),
         ),
       ),
